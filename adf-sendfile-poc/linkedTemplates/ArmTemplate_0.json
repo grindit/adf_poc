@@ -1,0 +1,192 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-sendfile-poc"
+		},
+		"Azure Function Send File_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'Azure Function Send File'"
+		},
+		"Azure Function Send File_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://adf-send-file.azurewebsites.net"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Azure Function Send File')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('Azure Function Send File_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('Azure Function Send File_functionKey')]"
+					},
+					"authentication": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline-send-file')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Az_Fnc-SendFile",
+						"type": "AzureFunctionActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"functionName": "ProcessAndSendJsonFunction",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"outages": [
+									{
+										"id": "2103000650",
+										"etr": "2021-09-01T21:10:20Z",
+										"startedAt": "2021-09-01T19:22:19Z",
+										"affectedDeliveryNodes": [
+											{
+												"dnId": "40005402"
+											},
+											{
+												"dnId": "40162994"
+											},
+											{
+												"dnId": "40213657"
+											},
+											{
+												"dnId": "40213659"
+											}
+										]
+									},
+									{
+										"id": "2105012388",
+										"etr": "2021-09-01T21:10:00Z",
+										"startedAt": "2021-09-01T19:22:19Z",
+										"affectedDeliveryNodes": [
+											{
+												"dnId": "40034531"
+											},
+											{
+												"dnId": "40149223"
+											},
+											{
+												"dnId": "40149400"
+											},
+											{
+												"dnId": "40149554"
+											},
+											{
+												"dnId": "40163087"
+											},
+											{
+												"dnId": "40213646"
+											},
+											{
+												"dnId": "40278856"
+											},
+											{
+												"dnId": "40278882"
+											},
+											{
+												"dnId": "40278882"
+											}
+										]
+									},
+									{
+										"id": "2102019886",
+										"etr": "2021-09-01T21:10:20Z",
+										"startedAt": "2021-09-01T19:22:19Z",
+										"affectedDeliveryNodes": [
+											{
+												"dnId": "40149424"
+											},
+											{
+												"dnId": "40162982"
+											},
+											{
+												"dnId": "40213653"
+											},
+											{
+												"dnId": "40278923"
+											}
+										]
+									},
+									{
+										"id": "2103002275",
+										"etr": "2021-09-01T21:10:20Z",
+										"startedAt": "2021-09-01T19:22:19Z",
+										"affectedDeliveryNodes": [
+											{
+												"dnId": "40149433"
+											},
+											{
+												"dnId": "40213659"
+											}
+										]
+									},
+									{
+										"id": "2109000511",
+										"etr": null,
+										"startedAt": "2021-09-01T19:22:19Z",
+										"affectedDeliveryNodes": [
+											{
+												"dnId": "40150209"
+											},
+											{
+												"dnId": "40159261"
+											},
+											{
+												"dnId": "40159261"
+											},
+											{
+												"dnId": "40163003"
+											},
+											{
+												"dnId": "40176749"
+											}
+										]
+									}
+								]
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Azure Function Send File",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-02-16T16:31:37Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Azure Function Send File')]"
+			]
+		}
+	]
+}
