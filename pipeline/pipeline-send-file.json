@@ -1,0 +1,142 @@
+{
+	"name": "pipeline-send-file",
+	"properties": {
+		"activities": [
+			{
+				"name": "Az_Fnc-SendFile",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "ProcessAndSendJsonFunction",
+					"method": "POST",
+					"body": {
+						"outages": [
+							{
+								"id": "2103000650",
+								"etr": "2021-09-01T21:10:20Z",
+								"startedAt": "2021-09-01T19:22:19Z",
+								"affectedDeliveryNodes": [
+									{
+										"dnId": "40005402"
+									},
+									{
+										"dnId": "40162994"
+									},
+									{
+										"dnId": "40213657"
+									},
+									{
+										"dnId": "40213659"
+									}
+								]
+							},
+							{
+								"id": "2105012388",
+								"etr": "2021-09-01T21:10:00Z",
+								"startedAt": "2021-09-01T19:22:19Z",
+								"affectedDeliveryNodes": [
+									{
+										"dnId": "40034531"
+									},
+									{
+										"dnId": "40149223"
+									},
+									{
+										"dnId": "40149400"
+									},
+									{
+										"dnId": "40149554"
+									},
+									{
+										"dnId": "40163087"
+									},
+									{
+										"dnId": "40213646"
+									},
+									{
+										"dnId": "40278856"
+									},
+									{
+										"dnId": "40278882"
+									},
+									{
+										"dnId": "40278882"
+									}
+								]
+							},
+							{
+								"id": "2102019886",
+								"etr": "2021-09-01T21:10:20Z",
+								"startedAt": "2021-09-01T19:22:19Z",
+								"affectedDeliveryNodes": [
+									{
+										"dnId": "40149424"
+									},
+									{
+										"dnId": "40162982"
+									},
+									{
+										"dnId": "40213653"
+									},
+									{
+										"dnId": "40278923"
+									}
+								]
+							},
+							{
+								"id": "2103002275",
+								"etr": "2021-09-01T21:10:20Z",
+								"startedAt": "2021-09-01T19:22:19Z",
+								"affectedDeliveryNodes": [
+									{
+										"dnId": "40149433"
+									},
+									{
+										"dnId": "40213659"
+									}
+								]
+							},
+							{
+								"id": "2109000511",
+								"etr": null,
+								"startedAt": "2021-09-01T19:22:19Z",
+								"affectedDeliveryNodes": [
+									{
+										"dnId": "40150209"
+									},
+									{
+										"dnId": "40159261"
+									},
+									{
+										"dnId": "40159261"
+									},
+									{
+										"dnId": "40163003"
+									},
+									{
+										"dnId": "40176749"
+									}
+								]
+							}
+						]
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "Azure Function Send File",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-02-16T16:31:37Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
