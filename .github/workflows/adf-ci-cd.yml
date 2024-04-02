@@ -45,7 +45,7 @@ jobs:
 
     - name: Build ADF files
       run: |
-        npm run build export ${{ env.GITHUB_WORKSPACE }} /subscriptions/${{ env.SUBSCRIPTION_ID }}/resourceGroups/${{ env.DEV_RESOURCE_GROUP }}/providers/Microsoft.DataFactory/factories/${{ env.DEV_ADF_NAME }} ${{ env.OUTPUT_PATH }}
+        npm run build export ${{ github.workspace }}  /subscriptions/${{ env.SUBSCRIPTION_ID }}/resourceGroups/${{ env.DEV_RESOURCE_GROUP }}/providers/Microsoft.DataFactory/factories/${{ env.DEV_ADF_NAME }} ${{ env.OUTPUT_PATH }}
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
