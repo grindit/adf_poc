@@ -16,7 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"functionName": "SendFile",
-					"method": "POST"
+					"method": "POST",
+					"body": "{ test: \"dsdsd\" }\n"
 				},
 				"linkedServiceName": {
 					"referenceName": "AzureFunction1",
