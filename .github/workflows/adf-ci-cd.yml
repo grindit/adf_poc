@@ -26,6 +26,16 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Extract Subscription ID from Azure Credentials
+      shell: pwsh
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      run: |
+        $creds = $env:AZURE_CREDENTIALS | ConvertFrom-Json
+        $subscriptionId = $creds.subscriptionId
+        echo "Subscription ID: $subscriptionId"
+        echo "SUBSCRIPTION_ID=$subscriptionId" >> $GITHUB_ENV
+
     - name: Install Node
       uses: actions/setup-node@v4
       with:
@@ -33,7 +43,7 @@ jobs:
     
     - name: Buiild ADF files
       run: |
-        npm run build export ./ /subscriptions/a4b8e661-a729-4d5d-a473-07e2384b262d/resourceGroups/${{ env.DEV_RESOURCE_GROUP }}/providers/Microsoft.DataFactory/factories/${{ env.DEV_ADF_NAME }} ${{ env.OUTPUT_PATH }}
+        npm run build export ./ /subscriptions/${{ env.SUBSCRIPTION_ID }}/resourceGroups/${{ env.DEV_RESOURCE_GROUP }}/providers/Microsoft.DataFactory/factories/${{ env.DEV_ADF_NAME }} ${{ env.OUTPUT_PATH }}
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
