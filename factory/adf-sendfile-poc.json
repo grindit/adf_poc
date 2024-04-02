@@ -1,9 +1,0 @@
-{
-	"name": "adf-sendfile-poc",
-	"location": "westeurope",
-	"identity": {
-		"type": "SystemAssigned",
-		"principalId": "29b96a9c-3c37-453a-a356-7924828810ba",
-		"tenantId": "cf36141c-ddd7-45a7-b073-111f66d0b30c"
-	}
-}
