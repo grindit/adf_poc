@@ -29,7 +29,6 @@ jobs:
       run: |
         $creds = $env:AZURE_CREDENTIALS | ConvertFrom-Json
         $subscriptionId = $creds.subscriptionId
-        echo "::add-mask::$subscriptionId"
         echo "SUBSCRIPTION_ID=$subscriptionId" >> $GITHUB_ENV
 
     - name: Install Node
