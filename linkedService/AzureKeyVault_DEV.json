@@ -1,0 +1,10 @@
+{
+	"name": "AzureKeyVault_DEV",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://adf-poc-dev.vault.azure.net/"
+		}
+	}
+}
