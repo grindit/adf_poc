@@ -7,7 +7,7 @@ on:
 env:
   DEV_RESOURCE_GROUP: 'ADF_POC2'
   DEV_ADF_NAME: 'adf-sendfile-poc2'
-  OUTPUT_PATH: './ArmTemplateOutput'
+  OUTPUT_PATH: 'ArmTemplateOutput'
 
 jobs:
   build-adf:
@@ -15,7 +15,7 @@ jobs:
     environment: DEV
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Azure login
       uses: azure/login@v1
