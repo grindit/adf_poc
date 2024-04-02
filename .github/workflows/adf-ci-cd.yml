@@ -14,9 +14,6 @@ jobs:
   build-adf:
     runs-on: ubuntu-latest
     environment: DEV
-    defaults:
-      run:
-        working-directory: ./
 
     steps:
     - uses: actions/checkout@v2
