@@ -6,7 +6,7 @@ on:
 
 env:
   DEV_RESOURCE_GROUP: 'ADF_POC_2'
-  DEV_ADF_NAME: 'adf-sendfile-poc'
+  DEV_ADF_NAME: 'adf-sendfile-poc2'
   OUTPUT_PATH: './ArmTemplateOutput'
 
 jobs:
