@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "factoryName": {
-            "value": "adf-sendfile-poc2"
+            "value": "adf-poc2-sendfile-qa"
         },
         "AzureFunction1_functionKey": {
             "value": ""

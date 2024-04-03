@@ -11,6 +11,8 @@ inputs:
     required: true
   azure_function_name:
     required: true
+  azure_function_key:
+    required: true
   artifact_name:
     required: true
   azure_credentials:
@@ -36,4 +38,16 @@ runs:
       echo "resource_group: ${{ inputs.resource_group }}"
       echo "azure_function_name: ${{ inputs.azure_function_name }}"
       echo "artifact_name: ${{ inputs.artifact_name }}"
-      echo "azure_credentials: ${{ inputs.azure_credentials }}"
+  
+    - name: Stop ADF Triggers
+      uses: azure/powershell@v1
+      with:
+        scriptPath: ./${{ inputs.artifact_name }}/PrePostDeploymentScript.ps1
+        azPSVersion: 'latest'
+        args: >
+          -ArmTemplate "${{ inputs.arm_template_path }}"
+          -ArmTemplateParameters "${{ inputs.arm_parameters_path }}"
+          -ResourceGroupName "${{ inputs.resource_group }}"
+          -DataFactoryName "${{ inputs.adf_name }}"
+          -predeployment $true
+          -deleteDeployment $false

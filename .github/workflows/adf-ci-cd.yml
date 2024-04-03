@@ -71,8 +71,9 @@ jobs:
       with:
         arm_template_path: ${{ github.workspace }}/${{ env.OUTPUT_PATH }}/ARMTemplateForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
-        resource_group: 'rg_test'
-        adf_name: 'adf_test'
-        azure_function_name: 'functiin_test'
+        resource_group: 'ADF_POC3'
+        adf_name: 'adf-sendfile-poc3'
+        azure_function_name: 'adf-poc2-sendfile-qa'
+        azure_function_key: ${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }}
         artifact_name: ${{ env.ARTIFACT_NAME }}
         azure_credentials: '${{ secrets.AZURE_CREDENTIALS }}'
