@@ -67,7 +67,7 @@ jobs:
       uses: actions/checkout@v4
   
     - name: Deploy QA
-      uses: ./.github/template/deploy_azure_webapp
+      uses: ./.github/templates/adf_deployment
       with:
         arm_template_path: ${{ github.workspace }}/${{ env.OUTPUT_PATH }}/ARMTemplateForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
