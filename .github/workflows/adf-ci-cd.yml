@@ -11,7 +11,7 @@ on:
 
 env:
   DEV_RESOURCE_GROUP: 'ADF_POC2'
-  DEV_ADF_NAME: 'adf-sendfile-poc2'cc
+  DEV_ADF_NAME: 'adf-sendfile-poc2'
   OUTPUT_PATH: 'ArmTemplateOutput'
   ARTIFACT_NAME: 'adf_artifact'
 
