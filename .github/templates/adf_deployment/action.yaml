@@ -48,7 +48,7 @@ runs:
     uses: azure/powershell@v2
     with:
       inlineScript: | 
-        $creds = ConvertFrom-Json '${{ secrets.AZURE_CREDENTIALS }}'
+        $creds = ConvertFrom-Json '${{ inputs.azure_credentials }}'
         Connect-AzAccount `
           -TenantId $creds.tenantId `
           -ApplicationId $creds.clientId `
