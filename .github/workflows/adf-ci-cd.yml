@@ -69,7 +69,7 @@ jobs:
     - name: Deploy QA
       uses: ./.github/templates/adf_deployment
       with:
-        arm_template_path: ${{ github.workspace }}/${{ env.OUTPUT_PATH }}/ARMTemplateForFactory.json
+        arm_template_file: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
         resource_group: 'ADF_POC3'
         adf_name: 'adf-sendfile-poc3'
