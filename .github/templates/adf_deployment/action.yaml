@@ -23,12 +23,14 @@ runs:
     uses: actions/download-artifact@v2
     with:
       name: ${{ env.artifact_name }}
-      
+
   - name: List files
+    shell: pwsh
     run: |
       ls -R ${{ github.workspace }}
 
-  -name: Show values
+  - name: Show values
+    shell: pwsh
     run: |
       echo "arm_template_path: ${{ inputs.arm_template_path }}"
       echo "arm_parameters_path: ${{ inputs.arm_parameters_path }}"
