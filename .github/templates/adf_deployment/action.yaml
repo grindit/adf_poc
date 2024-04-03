@@ -49,10 +49,11 @@ runs:
     with:
       inlineScript: | 
         $creds = ConvertFrom-Json '${{ inputs.azure_credentials }}'
+        $securePassword = ConvertTo-SecureString $creds.clientSecret -AsPlainText -Force
+        $credential = New-Object System.Management.Automation.PSCredential ($creds.clientId, $securePassword)
         Connect-AzAccount `
           -TenantId $creds.tenantId `
-          -ApplicationId $creds.clientId `
-          -ClientSecret $creds.clientSecret `
+          -Credential $credential `
           -ServicePrincipal
         ./${{ inputs.artifact_name }}/PrePostDeploymentScript.ps1 -ArmTemplate "${{ inputs.arm_template_path }}" -ArmTemplateParameters "${{ inputs.arm_parameters_path }}" -ResourceGroupName "${{ inputs.resource_group }}" -DataFactoryName "${{ inputs.adf_name }}" -predeployment $true -deleteDeployment $false
       azPSVersion: 'latest'
