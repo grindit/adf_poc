@@ -38,7 +38,12 @@ runs:
       echo "resource_group: ${{ inputs.resource_group }}"
       echo "azure_function_name: ${{ inputs.azure_function_name }}"
       echo "artifact_name: ${{ inputs.artifact_name }}"
-  
+
+  - name: Azure login
+    uses: azure/login@v2
+    with:
+      creds: ${{ inputs.azure_credentials }}
+
   - name: Stop ADF Triggers
     uses: azure/powershell@v2
     with:
