@@ -15,10 +15,10 @@ jobs:
     environment: DEV
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Azure login
-      uses: azure/login@v1
+      uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -31,9 +31,6 @@ jobs:
         $subscriptionId = $creds.subscriptionId
         echo "Subscription ID: $subscriptionId"
         echo "SUBSCRIPTION_ID=$subscriptionId" >> $env:GITHUB_ENV
-
-    - name: show value
-      run: echo ${{ env.SUBSCRIPTION_ID }}
 
     - name: Install Node
       uses: actions/setup-node@v4
@@ -48,7 +45,7 @@ jobs:
         npm run build export ${{ github.workspace }} /subscriptions/${{ env.SUBSCRIPTION_ID }}/resourceGroups/${{ env.DEV_RESOURCE_GROUP }}/providers/Microsoft.DataFactory/factories/${{ env.DEV_ADF_NAME }} ${{ env.OUTPUT_PATH }}
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: artifact
         path: ${{ env.OUTPUT_PATH }}
