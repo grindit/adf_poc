@@ -1,0 +1,39 @@
+name: Deploy Azure Data Factory
+
+inputs:
+  arm_template_path:
+    required: true
+  arm_parameters_path:
+    required: true
+  adf_name:
+    required: true
+  resource_group:
+    required: true
+  azure_function_name:
+    required: true
+  artifact_name:
+    required: true
+  azure_credentials:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+  - name: Download Artifact
+    uses: actions/download-artifact@v2
+    with:
+      name: ${{ env.artifact_name }}
+      
+  - name: List files
+    run: |
+      ls -R ${{ github.workspace }}
+
+  -name: Show values
+    run: |
+      echo "arm_template_path: ${{ inputs.arm_template_path }}"
+      echo "arm_parameters_path: ${{ inputs.arm_parameters_path }}"
+      echo "adf_name: ${{ inputs.adf_name }}"
+      echo "resource_group: ${{ inputs.resource_group }}"
+      echo "azure_function_name: ${{ inputs.azure_function_name }}"
+      echo "artifact_name: ${{ inputs.artifact_name }}"
+      echo "azure_credentials: ${{ inputs.azure_credentials }}"
