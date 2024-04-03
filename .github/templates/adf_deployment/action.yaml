@@ -47,5 +47,12 @@ runs:
   - name: Stop ADF Triggers
     uses: azure/powershell@v2
     with:
-      inlineScript: ./${{ inputs.artifact_name }}/PrePostDeploymentScript.ps1 -ArmTemplate "${{ inputs.arm_template_path }}" -ArmTemplateParameters "${{ inputs.arm_parameters_path }}" -ResourceGroupName "${{ inputs.resource_group }}" -DataFactoryName "${{ inputs.adf_name }}" -predeployment $true -deleteDeployment $false
+      inlineScript: | 
+        $creds = ConvertFrom-Json '${{ secrets.AZURE_CREDENTIALS }}'
+        Connect-AzAccount `
+          -TenantId $creds.tenantId `
+          -ApplicationId $creds.clientId `
+          -ClientSecret $creds.clientSecret `
+          -ServicePrincipal
+        ./${{ inputs.artifact_name }}/PrePostDeploymentScript.ps1 -ArmTemplate "${{ inputs.arm_template_path }}" -ArmTemplateParameters "${{ inputs.arm_parameters_path }}" -ResourceGroupName "${{ inputs.resource_group }}" -DataFactoryName "${{ inputs.adf_name }}" -predeployment $true -deleteDeployment $false
       azPSVersion: 'latest'
