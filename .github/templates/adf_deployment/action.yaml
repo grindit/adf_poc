@@ -39,15 +39,15 @@ runs:
       echo "azure_function_name: ${{ inputs.azure_function_name }}"
       echo "artifact_name: ${{ inputs.artifact_name }}"
   
-    - name: Stop ADF Triggers
-      uses: azure/powershell@v1
-      with:
-        scriptPath: ./${{ inputs.artifact_name }}/PrePostDeploymentScript.ps1
-        azPSVersion: 'latest'
-        args: >
-          -ArmTemplate "${{ inputs.arm_template_path }}"
-          -ArmTemplateParameters "${{ inputs.arm_parameters_path }}"
-          -ResourceGroupName "${{ inputs.resource_group }}"
-          -DataFactoryName "${{ inputs.adf_name }}"
-          -predeployment $true
-          -deleteDeployment $false
+  - name: Stop ADF Triggers
+    uses: azure/powershell@v1
+    with:
+      scriptPath: ./${{ inputs.artifact_name }}/PrePostDeploymentScript.ps1
+      azPSVersion: 'latest'
+      args: >
+        -ArmTemplate "${{ inputs.arm_template_path }}"
+        -ArmTemplateParameters "${{ inputs.arm_parameters_path }}"
+        -ResourceGroupName "${{ inputs.resource_group }}"
+        -DataFactoryName "${{ inputs.adf_name }}"
+        -predeployment $true
+        -deleteDeployment $false
