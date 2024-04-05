@@ -42,6 +42,7 @@ runs:
       echo "resource_group: ${{ inputs.resource_group }}"
       echo "azure_function_name: ${{ inputs.azure_function_name }}"
       echo "artifact_name: ${{ inputs.artifact_name }}"
+      echo "secret_names: ${{ inputs.secret_names }}"
 
   - name: Azure login
     uses: azure/login@v2
