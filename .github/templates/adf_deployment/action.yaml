@@ -19,6 +19,8 @@ inputs:
     required: true
   key_vault_name:
     required: true
+  secret_names:
+    required: true
 
 runs:
   using: "composite"
