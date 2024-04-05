@@ -42,15 +42,16 @@ runs:
       echo "artifact_name: ${{ inputs.artifact_name }}"
 
   - name: Fetch Secrets
-    id: secrets
+    id: fetched_secrets
     uses: ./.github/templates/az_keyvault_fetch_secrets
     with:
-      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      azure_credentials: ${{ inputs.azure_credentials }}
       key_vault_name: '${{ inputs.key_vault_name }}'
       secret_names: 'secret1,secret2'
       
   - name: Use Secret1
-    run: echo "Secret1: ${{ steps.secrets.outputs.secret1 }}"
+    run: |
+      echo "Secret1: ${{ steps.fetched_secrets.outputs.secret1 }}"
 
   - name: Azure login
     uses: azure/login@v2
