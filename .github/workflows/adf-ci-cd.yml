@@ -98,10 +98,7 @@ jobs:
         azure_function_name: '${{ env.AZURE_FUNCTION_NAME }}'
         artifact_name: ${{ env.ARTIFACT_NAME }}
         azure_credentials: '${{ secrets.AZURE_CREDENTIALS }}'
-        adf_additional_paramaters: >
-          factoryName=${{ env.ADF_NAME }}
-          AzureFunction1_functionKey=${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }}
-          Test=${{ steps.fetch_secrets.outputs.secret1 }}
+        adf_additional_paramaters: 'factoryName=${{ env.ADF_NAME }} AzureFunction1_functionKey=${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }} Test=${{ steps.fetch_secrets.outputs.secret1 }}'
 
   deploy-prod:
     runs-on: ubuntu-latest
@@ -145,7 +142,4 @@ jobs:
         azure_function_name: '${{ env.AZURE_FUNCTION_NAME }}'
         artifact_name: ${{ env.ARTIFACT_NAME }}
         azure_credentials: '${{ secrets.AZURE_CREDENTIALS }}'
-        adf_additional_paramaters: >
-          factoryName=${{ env.ADF_NAME }}
-          AzureFunction1_functionKey=${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }}
-          Test=${{ steps.fetch_secrets.outputs.secret1 }}
+        adf_additional_paramaters: 'factoryName=${{ env.ADF_NAME }} AzureFunction1_functionKey=${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }} Test=${{ steps.fetch_secrets.outputs.secret1 }}'
