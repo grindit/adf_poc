@@ -92,7 +92,7 @@ jobs:
     - name: Deploy QA
       uses: ./.github/templates/adf_deployment
       with:
-        debug_mode: ${{ github.event.inputs.is_debug }}
+        debug_mode: ${{ github.event.inputs.debug_mode }}
         arm_template_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
         resource_group: '${{ vars.RESOURCE_GROUP }}'
@@ -136,7 +136,7 @@ jobs:
     - name: Deploy PROD
       uses: ./.github/templates/adf_deployment
       with:
-        debug_mode: ${{ github.event.inputs.is_debug }}
+        debug_mode: ${{ github.event.inputs.debug_mode }}
         arm_template_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
         resource_group: '${{ vars.RESOURCE_GROUP }}'
