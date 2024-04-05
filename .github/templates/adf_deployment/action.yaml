@@ -27,13 +27,13 @@ runs:
     uses: actions/download-artifact@v4
 
   - name: List files(Debug)
-    if: github.event.inputs.debug_mode
+    if: github.event.inputs.debug_mode == "true"
     shell: pwsh
     run: |
       ls -R ${{ github.workspace }}
 
   - name: Show values(Debug)
-    if: github.event.inputs.debug_mode
+    if: github.event.inputs.debug_mode == "true"
     shell: pwsh
     run: |
       echo "arm_template_path: ${{ inputs.arm_template_path }}"
