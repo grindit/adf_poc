@@ -62,11 +62,9 @@ jobs:
     if: github.event.inputs.environment == 'QA'
     environment: QA
     env:
-      SECRET_NAMES: 'secret1,secret2'
-      KEYVAULT_NAME: 'adf-poc-qa'
-      ADF_NAME: 'adf-sendfile-poc3'
+      SECRET_NAMES: 'az-function-key,secret1'
       AZURE_FUNCTION_NAME: 'adf-poc2-sendfile-qa'
-      RESOURCE_GROUP: 'ADF_POC3'
+
 
     steps:
     - name: Checkout
@@ -83,7 +81,7 @@ jobs:
       run: |
         $secrets = "${{ env.SECRET_NAMES }}".Split(',')
         foreach ($secret_name in $secrets) {
-          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ env.KEYVAULT_NAME }}" --query value -o tsv
+          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ vars.KEYVAULT_NAME }}" --query value -o tsv
           # Use environment files to set outputs in PowerShell
           "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
         }
@@ -98,15 +96,14 @@ jobs:
       with:
         arm_template_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
-        resource_group: '${{ env.RESOURCE_GROUP }}'
-        adf_name: '${{ env.ADF_NAME }}'
+        resource_group: '${{ vars.RESOURCE_GROUP }}'
+        adf_name: '${{ vars.ADF_NAME }}'
         azure_function_name: '${{ env.AZURE_FUNCTION_NAME }}'
         artifact_name: ${{ env.ARTIFACT_NAME }}
         azure_credentials: '${{ secrets.AZURE_CREDENTIALS }}'
         adf_additional_paramaters: > 
-          factoryName=${{ env.ADF_NAME }} 
-          AzureFunction1_functionKey=${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }} 
-          Test=${{ steps.fetch_secrets.outputs.secret1 }}
+          factoryName=${{ vars.ADF_NAME }} 
+          AzureFunction1_functionKey=${{ steps.fetch_secrets.outputs.az-function-key }}
 
   deploy-prod:
     runs-on: ubuntu-latest
@@ -114,11 +111,8 @@ jobs:
     if: github.event.inputs.environment == 'PROD'
     environment: PROD
     env:
-      SECRET_NAMES: 'secret1,secret2'
-      KEYVAULT_NAME: 'adf-poc-qa'
-      ADF_NAME: 'adf-sendfile-poc3'
+      SECRET_NAMES: 'az-function-key,secret1'
       AZURE_FUNCTION_NAME: 'adf-poc2-sendfile-qa'
-      RESOURCE_GROUP: 'ADF_POC3'
 
     steps:
     - name: Checkout
@@ -135,7 +129,7 @@ jobs:
       run: |
         $secrets = "${{ env.SECRET_NAMES }}".Split(',')
         foreach ($secret_name in $secrets) {
-          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ env.KEYVAULT_NAME }}" --query value -o tsv
+          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ vars.KEYVAULT_NAME }}" --query value -o tsv
           # Use environment files to set outputs in PowerShell
           "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
         }
@@ -145,17 +139,16 @@ jobs:
       run: |
         echo "Secret1: ${{ steps.fetch_secrets.outputs.secret1 }}"
 
-    - name: Deploy QA
+    - name: Deploy PROD
       uses: ./.github/templates/adf_deployment
       with:
         arm_template_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
-        resource_group: '${{ env.RESOURCE_GROUP }}'
-        adf_name: '${{ env.ADF_NAME }}'
+        resource_group: '${{ vars.RESOURCE_GROUP }}'
+        adf_name: '${{ vars.ADF_NAME }}'
         azure_function_name: '${{ env.AZURE_FUNCTION_NAME }}'
         artifact_name: ${{ env.ARTIFACT_NAME }}
         azure_credentials: '${{ secrets.AZURE_CREDENTIALS }}'
         adf_additional_paramaters: > 
-          factoryName=${{ env.ADF_NAME }} 
-          AzureFunction1_functionKey=${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }} 
-          Test=${{ steps.fetch_secrets.outputs.secret1 }}
+          factoryName=${{ vars.ADF_NAME }} 
+          AzureFunction1_functionKey=${{ steps.fetch_secrets.outputs.az-function-key }}
