@@ -11,8 +11,6 @@ on:
         type: boolean
         description: 'Enable debug mode'
         default: false
-      type: boolean
-
 
 env:
   DEV_RESOURCE_GROUP: 'ADF_POC2'
