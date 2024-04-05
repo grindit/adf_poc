@@ -78,6 +78,7 @@ jobs:
         azure_function_key: ${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }}
         artifact_name: ${{ env.ARTIFACT_NAME }}
         azure_credentials: '${{ secrets.AZURE_CREDENTIALS }}'
+        secret_names: 'secret1,secret2'
 
   deploy-prod:
     runs-on: ubuntu-latest
@@ -101,3 +102,4 @@ jobs:
         azure_function_key: ${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }}
         artifact_name: ${{ env.ARTIFACT_NAME }}
         azure_credentials: '${{ secrets.AZURE_CREDENTIALS }}'
+        secret_names: 'secret1,secret2'
