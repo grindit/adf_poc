@@ -73,15 +73,15 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Fetch Secrets and Set Outputs
-    id: fetch_secrets
-    shell: pwsh
-    run: |
-      $secrets = "${{ env.SECRET_NAMES }}".Split(',')
-      foreach ($secret_name in $secrets) {
-        $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ inputs.key_vault_name }}" --query value -o tsv
-        # Use environment files to set outputs in PowerShell
-        "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-      }
+      id: fetch_secrets
+      shell: pwsh
+      run: |
+        $secrets = "${{ env.SECRET_NAMES }}".Split(',')
+        foreach ($secret_name in $secrets) {
+          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ inputs.key_vault_name }}" --query value -o tsv
+          # Use environment files to set outputs in PowerShell
+          "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+        }
 
     - name: Use Secret1
       shell: pwsh
@@ -117,15 +117,15 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Fetch Secrets and Set Outputs
-    id: fetch_secrets
-    shell: pwsh
-    run: |
-      $secrets = "${{ env.SECRET_NAMES }}".Split(',')
-      foreach ($secret_name in $secrets) {
-        $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ inputs.key_vault_name }}" --query value -o tsv
-        # Use environment files to set outputs in PowerShell
-        "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-      }
+      id: fetch_secrets
+      shell: pwsh
+      run: |
+        $secrets = "${{ env.SECRET_NAMES }}".Split(',')
+        foreach ($secret_name in $secrets) {
+          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ inputs.key_vault_name }}" --query value -o tsv
+          # Use environment files to set outputs in PowerShell
+          "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+        }
 
     - name: Use Secret1
       shell: pwsh
