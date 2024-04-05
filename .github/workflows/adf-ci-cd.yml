@@ -83,7 +83,7 @@ jobs:
       run: |
         $secrets = "${{ env.SECRET_NAMES }}".Split(',')
         foreach ($secret_name in $secrets) {
-          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ inputs.key_vault_name }}" --query value -o tsv
+          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ env.KEYVAULT_NAME }}" --query value -o tsv
           # Use environment files to set outputs in PowerShell
           "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
         }
@@ -135,7 +135,7 @@ jobs:
       run: |
         $secrets = "${{ env.SECRET_NAMES }}".Split(',')
         foreach ($secret_name in $secrets) {
-          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ inputs.key_vault_name }}" --query value -o tsv
+          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ env.KEYVAULT_NAME }}" --query value -o tsv
           # Use environment files to set outputs in PowerShell
           "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
         }
