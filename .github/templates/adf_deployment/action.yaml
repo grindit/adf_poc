@@ -50,6 +50,7 @@ runs:
       secret_names: 'secret1,secret2'
       
   - name: Use Secret1
+    shell: pwsh
     run: |
       echo "Secret1: ${{ steps.fetched_secrets.outputs.secret1 }}"
 
