@@ -75,7 +75,7 @@ jobs:
     - name: Azure login
       uses: azure/login@v2
       with:
-        creds: ${{ inputs.azure_credentials }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
   
     - name: Fetch Secrets and Set Outputs
       id: fetch_secrets
@@ -127,7 +127,7 @@ jobs:
     - name: Azure login
       uses: azure/login@v2
       with:
-        creds: ${{ inputs.azure_credentials }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Fetch Secrets and Set Outputs
       id: fetch_secrets
