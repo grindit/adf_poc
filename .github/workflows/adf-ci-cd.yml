@@ -61,45 +61,91 @@ jobs:
     needs: build-adf
     if: github.event.inputs.environment == 'QA'
     environment: QA
+    env:
+      SECRET_NAMES: 'secret1,secret2'
+      KEYVAULT_NAME: 'adf-poc-qa'
+      ADF_NAME: 'adf-sendfile-poc3'
+      AZURE_FUNCTION_NAME: 'adf-poc2-sendfile-qa'
+      RESOURCE_GROUP: 'ADF_POC3'
+      ADDITIONAL_PARAMETERS: >
+        factoryName=${{ env.ADF_NAME }}
+        AzureFunction1_functionKey=${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }}
 
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-  
+
+      - name: Fetch Secrets and Set Outputs
+      id: fetch_secrets
+      shell: pwsh
+      run: |
+        $secrets = "${{ env.SECRET_NAMES }}".Split(',')
+        foreach ($secret_name in $secrets) {
+          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ inputs.key_vault_name }}" --query value -o tsv
+          # Use environment files to set outputs in PowerShell
+          "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+        }
+
+    - name: Use Secret1
+      shell: pwsh
+      run: |
+        echo "Secret1: ${{ steps.fetch_secrets.outputs.secret1 }}"
+
     - name: Deploy QA
       uses: ./.github/templates/adf_deployment
       with:
         arm_template_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
-        resource_group: 'ADF_POC3'
-        key_vault_name: 'adf-poc-qa'
-        adf_name: 'adf-sendfile-poc3'
-        azure_function_name: 'adf-poc2-sendfile-qa'
-        azure_function_key: ${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }}
+        resource_group: '${{ env.RESOURCE_GROUP }}'
+        adf_name: '${{ env.ADF_NAME }}'
+        azure_function_name: '${{ env.AZURE_FUNCTION_NAME }}'
         artifact_name: ${{ env.ARTIFACT_NAME }}
         azure_credentials: '${{ secrets.AZURE_CREDENTIALS }}'
-        secret_names: 'secret1,secret2'
+        adf_additional_paramaters: '${{ env.ADDITIONAL_PARAMETERS }}'
 
   deploy-prod:
     runs-on: ubuntu-latest
     needs: build-adf
     if: github.event.inputs.environment == 'PROD'
     environment: PROD
-    
+    env:
+      SECRET_NAMES: 'secret1,secret2'
+      KEYVAULT_NAME: 'adf-poc-qa'
+      ADF_NAME: 'adf-sendfile-poc3'
+      AZURE_FUNCTION_NAME: 'adf-poc2-sendfile-qa'
+      RESOURCE_GROUP: 'ADF_POC3'
+      ADDITIONAL_PARAMETERS: >
+        factoryName=${{ env.ADF_NAME }}
+        AzureFunction1_functionKey=${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }}
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-  
-    - name: Deploy PROD
+
+      - name: Fetch Secrets and Set Outputs
+      id: fetch_secrets
+      shell: pwsh
+      run: |
+        $secrets = "${{ env.SECRET_NAMES }}".Split(',')
+        foreach ($secret_name in $secrets) {
+          $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ inputs.key_vault_name }}" --query value -o tsv
+          # Use environment files to set outputs in PowerShell
+          "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+        }
+
+    - name: Use Secret1
+      shell: pwsh
+      run: |
+        echo "Secret1: ${{ steps.fetch_secrets.outputs.secret1 }}"
+
+    - name: Deploy QA
       uses: ./.github/templates/adf_deployment
       with:
         arm_template_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateForFactory.json
-        arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_prod.json
-        resource_group: 'ADF_POC4'
-        key_vault_name: ''
-        adf_name: 'adf-sendfile-poc4'
-        azure_function_name: 'adf-poc2-sendfile-prod'
-        azure_function_key: ${{ secrets.AZ_FUNCTION_SEND_FILE_KEY }}
+        arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
+        resource_group: '${{ env.RESOURCE_GROUP }}'
+        adf_name: '${{ env.ADF_NAME }}'
+        azure_function_name: '${{ env.AZURE_FUNCTION_NAME }}'
         artifact_name: ${{ env.ARTIFACT_NAME }}
         azure_credentials: '${{ secrets.AZURE_CREDENTIALS }}'
-        secret_names: 'secret1,secret2'
+        adf_additional_paramaters: '${{ env.ADDITIONAL_PARAMETERS }}'
