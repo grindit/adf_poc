@@ -41,19 +41,6 @@ runs:
       echo "azure_function_name: ${{ inputs.azure_function_name }}"
       echo "artifact_name: ${{ inputs.artifact_name }}"
 
-  - name: Fetch Secrets
-    id: fetched_secrets
-    uses: ./.github/templates/az_keyvault_fetch_secrets
-    with:
-      azure_credentials: ${{ inputs.azure_credentials }}
-      key_vault_name: '${{ inputs.key_vault_name }}'
-      secret_names: 'secret1,secret2'
-      
-  - name: Use Secret1
-    shell: pwsh
-    run: |
-      echo "Secret1: ${{ steps.fetched_secrets.outputs.secret1 }}"
-
   - name: Azure login
     uses: azure/login@v2
     with:
@@ -74,6 +61,22 @@ runs:
   #         -ServicePrincipal
   #       ./${{ inputs.artifact_name }}/PrePostDeploymentScript.ps1 -ArmTemplate "${{ inputs.arm_template_path }}" -ArmTemplateParameters "${{ inputs.arm_parameters_path }}" -ResourceGroupName "${{ inputs.resource_group }}" -DataFactoryName "${{ inputs.adf_name }}" -predeployment $true -deleteDeployment $false
   #     azPSVersion: 'latest'
+
+  - name: Fetch Secrets and Set Outputs
+    id: fetch_secrets
+    shell: pwsh
+    run: |
+      $secrets = "${{ inputs.secret_names }}".Split(',')
+      foreach ($secret_name in $secrets) {
+        $secret_value = az keyvault secret show --name $secret_name --vault-name "${{ inputs.key_vault_name }}" --query value -o tsv
+        # Use environment files to set outputs in PowerShell
+        "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+      }
+
+  - name: Use Secret1
+    shell: pwsh
+    run: |
+      echo "Secret1: ${{ steps.fetch_secrets.outputs.secret1 }}"
 
   - name: data-factory-deploy
     uses: Azure/data-factory-deploy-action@v1.2.0
