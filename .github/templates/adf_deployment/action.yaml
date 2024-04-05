@@ -17,6 +17,8 @@ inputs:
     required: true
   azure_credentials:
     required: true
+  key_vault_name:
+    required: true
 
 runs:
   using: "composite"
@@ -39,12 +41,24 @@ runs:
       echo "azure_function_name: ${{ inputs.azure_function_name }}"
       echo "artifact_name: ${{ inputs.artifact_name }}"
 
+  - name: Fetch Secrets
+    id: secrets
+    uses: ./.github/templates/az_keyvault_fetch_secrets
+    with:
+      azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      key_vault_name: '${{ inputs.key_vault_name }}'
+      secret_names: 'secret1,secret2'
+      
+  - name: Use Secret1
+    run: echo "Secret1: ${{ steps.secrets.outputs.secret1 }}"
+
   - name: Azure login
     uses: azure/login@v2
     with:
       creds: ${{ inputs.azure_credentials }}
       enable-AzPSSession: true 
-
+  
+  # Azure Powershell version of a script that stops the triggers in the ADF instead of using the data-factory-deploy-action (Alternative to the next step)
   # - name: Stop ADF Triggers
   #   uses: azure/powershell@v2
   #   with:

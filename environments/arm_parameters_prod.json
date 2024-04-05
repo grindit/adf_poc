@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "factoryName": {
-            "value": "adf-sendfile-poc2"
+            "value": "adf-poc2-sendfile-prod"
         },
         "AzureFunction1_functionKey": {
             "value": ""
         },
         "AzureFunction1_properties_typeProperties_functionAppUrl": {
-            "value": "https://adf-poc2-sendfile-dev.azurewebsites.net"
+            "value": "https://adf-poc2-sendfile-prod.azurewebsites.net"
         },
         "AzureKeyVault_properties_typeProperties_baseUrl": {
-            "value": "https://adf-poc-dev.vault.azure.net/"
+            "value": "https://adf-poc-prod.vault.azure.net/"
         }
     }
 }
