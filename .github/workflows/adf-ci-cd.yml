@@ -7,6 +7,11 @@ on:
         type: environment
         description: Select the environment
         default: 'QA'
+      debug_mode:
+        type: boolean
+        description: 'Enable debug mode'
+        default: false
+      type: boolean
 
 
 env:
@@ -86,14 +91,10 @@ jobs:
           "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
         }
 
-    - name: Use Secret1
-      shell: pwsh
-      run: |
-        echo "Secret1: ${{ steps.fetch_secrets.outputs.secret1 }}"
-
     - name: Deploy QA
       uses: ./.github/templates/adf_deployment
       with:
+        debug_mode: ${{ github.event.inputs.is_debug }}
         arm_template_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
         resource_group: '${{ vars.RESOURCE_GROUP }}'
@@ -134,14 +135,10 @@ jobs:
           "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
         }
 
-    - name: Use Secret1
-      shell: pwsh
-      run: |
-        echo "Secret1: ${{ steps.fetch_secrets.outputs.secret1 }}"
-
     - name: Deploy PROD
       uses: ./.github/templates/adf_deployment
       with:
+        debug_mode: ${{ github.event.inputs.is_debug }}
         arm_template_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
         resource_group: '${{ vars.RESOURCE_GROUP }}'

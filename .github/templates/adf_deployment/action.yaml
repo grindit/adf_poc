@@ -15,6 +15,9 @@ inputs:
     required: true
   adf_additional_paramaters:
     required: true
+  debug_mode:
+    required: false
+    default: false
 
 runs:
   using: "composite"
@@ -22,12 +25,14 @@ runs:
   - name: Download Artifact
     uses: actions/download-artifact@v4
 
-  - name: List files
+  - name: List files(Debug)
+    if: github.event.inputs.debug_mode
     shell: pwsh
     run: |
       ls -R ${{ github.workspace }}
 
-  - name: Show values
+  - name: Show values(Debug)
+    if: github.event.inputs.debug_mode
     shell: pwsh
     run: |
       echo "arm_template_path: ${{ inputs.arm_template_path }}"
