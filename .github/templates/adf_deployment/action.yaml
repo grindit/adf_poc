@@ -16,6 +16,7 @@ inputs:
   adf_additional_paramaters:
     required: true
   debug_mode:
+    type: boolean
     required: false
     default: false
 
