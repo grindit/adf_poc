@@ -94,6 +94,7 @@ jobs:
       with:
         debug_mode: ${{ github.event.inputs.debug_mode }}
         arm_template_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateForFactory.json
+        arm_source_parameters_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateParametersForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
         resource_group: '${{ vars.RESOURCE_GROUP }}'
         adf_name: '${{ vars.ADF_NAME }}'
@@ -138,6 +139,7 @@ jobs:
       with:
         debug_mode: ${{ github.event.inputs.debug_mode }}
         arm_template_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateForFactory.json
+        arm_source_parameters_path: ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateParametersForFactory.json
         arm_parameters_path: ${{ github.workspace }}/environments/arm_parameters_qa.json
         resource_group: '${{ vars.RESOURCE_GROUP }}'
         adf_name: '${{ vars.ADF_NAME }}'

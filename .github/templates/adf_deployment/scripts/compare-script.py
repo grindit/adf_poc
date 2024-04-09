@@ -1,3 +1,4 @@
+import argparse
 import json
 
 def load_template_parameters(template_path):
@@ -18,11 +19,11 @@ def compare_parameters(params1, params2):
         missing_in_2 = params1_names - params2_names
         return False, (missing_in_1, missing_in_2)
 
-def main(template1_path, template2_path):
-    params1 = load_template_parameters(template1_path)
-    params2 = load_template_parameters(template2_path)
+def main(source_path, target_path):
+    source_params = load_template_parameters(source_path)
+    target_params = load_template_parameters(target_path)
 
-    match, mismatched_params = compare_parameters(params1, params2)
+    match, mismatched_params = compare_parameters(source_params, target_params)
     
     if match:
         print("Parameters match across both templates.")
@@ -38,9 +39,10 @@ def main(template1_path, template2_path):
         print("# Make sure that each file have the same parameters and values are correct for each environment #")
         print("#################################################################################################") 
 
-# Paths to your ARM template files
-template1_path = 'ArmTemplateOutput/ARMTemplateParametersForFactory.json'
-template2_path = 'environments/arm_parameters_prod.json'
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Compare ARM parameters between two templates.")
+    parser.add_argument('-source', type=str, required=True, help='The path to the source ARM parameters file')
+    parser.add_argument('-target', type=str, required=True, help='The path to the target ARM parameters file')
 
-# Run the comparison
-main(template1_path, template2_path)
+    args = parser.parse_args()
+    main(args.source, args.target)
