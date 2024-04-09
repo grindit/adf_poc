@@ -29,7 +29,7 @@ def main(source_path, target_path):
         print("Parameters match across both templates.")
     else:
         missing_in_1, missing_in_2 = mismatched_params
-        print("Parameters do not match across environments")
+        print("### Parameters Check: Parameters do not match across environments ###")
         if missing_in_1:
             print(f"Parameters in template 2 not found in template 1: {', '.join(missing_in_1)}")
         if missing_in_2:
