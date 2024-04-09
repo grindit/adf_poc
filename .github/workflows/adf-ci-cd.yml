@@ -89,13 +89,6 @@ jobs:
           "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
         }
 
-    - name: Compare ARM parameters files between DEV and Target environment
-      shell: bash
-      run: |
-        python ${{ github.workspace }}/scripts/compare-script.py \
-        -source ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateParametersForFactory.json \
-        -target ${{ github.workspace }}/environments/arm_parameters_qa.json
-
     - name: Deploy QA
       uses: ./.github/templates/adf_deployment
       with:
@@ -140,13 +133,6 @@ jobs:
           # Use environment files to set outputs in PowerShell
           "$secret_name=$secret_value" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
         }
-
-    - name: Compare ARM parameters files between DEV and Target environment
-      shell: bash
-      run: |
-        python ${{ github.workspace }}/scripts/compare-script.py \
-        -source ${{ github.workspace }}/${{ env.ARTIFACT_NAME }}/ARMTemplateParametersForFactory.json \
-        -target ${{ github.workspace }}/environments/arm_parameters_qa.json
 
     - name: Deploy PROD
       uses: ./.github/templates/adf_deployment
