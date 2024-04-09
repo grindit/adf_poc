@@ -74,7 +74,7 @@ runs:
   
   - name: Compare ARM parameters files between DEV and Target environment
     shell: bash
-    run: python ./.github/templates/adf_deployment/scripts/compare_script.py -source ${{ inputs.arm_source_parameters_path }} -target ${{ inputs.arm_parameters_path }}
+    run: python ./scripts/compare_script.py -source ${{ inputs.arm_source_parameters_path }} -target ${{ inputs.arm_parameters_path }}
 
   - name: data-factory-deploy
     uses: Azure/data-factory-deploy-action@v1.2.0
