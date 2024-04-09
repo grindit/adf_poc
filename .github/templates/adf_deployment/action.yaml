@@ -25,11 +25,6 @@ runs:
   using: "composite"
 
   steps:
-  - name: Checkout
-    uses: actions/checkout@v2
-    with:
-      submodules: 'true'
-
   - name: Download Artifact
     uses: actions/download-artifact@v4
 
@@ -74,7 +69,7 @@ runs:
   
   - name: Compare ARM parameters files between DEV and Target environment
     shell: bash
-    run: python ./scripts/compare_script.py -source ${{ inputs.arm_source_parameters_path }} -target ${{ inputs.arm_parameters_path }}
+    run: python ${{ github.workspace }}/scripts/compare-script.py -source ${{ inputs.arm_source_parameters_path }} -target ${{ inputs.arm_parameters_path }}
 
   - name: data-factory-deploy
     uses: Azure/data-factory-deploy-action@v1.2.0
