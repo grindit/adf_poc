@@ -1,0 +1,17 @@
+{
+	"name": "FooBarTrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 15,
+				"startTime": "2024-04-18T10:29:00",
+				"timeZone": "Central European Standard Time"
+			}
+		}
+	}
+}
