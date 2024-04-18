@@ -15,7 +15,7 @@
 			"type": "string",
 			"defaultValue": "https://adf-poc2-sendfile-dev.azurewebsites.net"
 		},
-		"AzureKeyVault_DEV_properties_typeProperties_baseUrl": {
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://adf-poc-dev.vault.azure.net/"
 		}
@@ -46,7 +46,7 @@
 							"functionName": "SendFile",
 							"method": "POST",
 							"headers": {},
-							"body": {}
+							"body": "{ test: \"dsdsd\" }\n"
 						},
 						"linkedServiceName": {
 							"referenceName": "AzureFunction1",
@@ -82,14 +82,34 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureKeyVault_DEV')]",
+			"name": "[concat(parameters('factoryName'), '/AzureKeyVault')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureKeyVault",
 				"typeProperties": {
-					"baseUrl": "[parameters('AzureKeyVault_DEV_properties_typeProperties_baseUrl')]"
+					"baseUrl": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FooBarTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 15,
+						"startTime": "2024-04-18T10:29:00",
+						"timeZone": "Central European Standard Time"
+					}
 				}
 			},
 			"dependsOn": []

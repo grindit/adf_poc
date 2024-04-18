@@ -11,7 +11,7 @@
 		"AzureFunction1_properties_typeProperties_functionAppUrl": {
 			"value": "https://adf-poc2-sendfile-dev.azurewebsites.net"
 		},
-		"AzureKeyVault_DEV_properties_typeProperties_baseUrl": {
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://adf-poc-dev.vault.azure.net/"
 		},
 		"containerUri": {

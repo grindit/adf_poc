@@ -15,7 +15,7 @@
 			"type": "string",
 			"defaultValue": "https://adf-poc2-sendfile-dev.azurewebsites.net"
 		},
-		"AzureKeyVault_DEV_properties_typeProperties_baseUrl": {
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://adf-poc-dev.vault.azure.net/"
 		},
@@ -52,8 +52,8 @@
 					"AzureFunction1_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('AzureFunction1_properties_typeProperties_functionAppUrl')]"
 					},
-					"AzureKeyVault_DEV_properties_typeProperties_baseUrl": {
-						"value": "[parameters('AzureKeyVault_DEV_properties_typeProperties_baseUrl')]"
+					"AzureKeyVault_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
 					}
 				}
 			},
