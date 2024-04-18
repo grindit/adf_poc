@@ -82,7 +82,6 @@ runs:
   #     additionalParameters: '${{ inputs.adf_additional_paramaters }}' # (10) Parameters which will be replaced in the ARM template. Expected format 'key1=value key2=value keyN=value'. At the minimum here you should provide the target ADF name parameter. Check the ARMTemplateParametersForFactory.json file for all the parameters that are expected in your scenario  
 
   - name: Stop started triggers
-      id: stop_triggers
       shell: pwsh
       run: |
         Write-Output "Stopping started triggers..."
