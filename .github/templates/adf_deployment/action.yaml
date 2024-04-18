@@ -101,7 +101,7 @@ runs:
   #       --parameters ${{ inputs.arm_parameters_path }} `
   #       --mode Incremental
 
-  -name: Show value of environmentla variable TRIGGERS
+  - name: Show value of environmentla variable TRIGGERS
     shell: pwsh
     run: |
       Write-Output "TRIGGERS=$Env:TRIGGERS"
