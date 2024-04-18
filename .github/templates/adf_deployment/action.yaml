@@ -96,9 +96,9 @@ runs:
   - name: Deploy ADF using ARM Template
     shell: pwsh
     run: |
-      az deployment group create --resource-group ${{ inputs.resource_group }} \
-        --template-file ${{ inputs.arm_template_path }} \
-        --parameters ${{ inputs.arm_parameters_path }} \
+      az deployment group create --resource-group ${{ inputs.resource_group }} `
+        --template-file ${{ inputs.arm_template_path }} `
+        --parameters ${{ inputs.arm_parameters_path }} `
         --mode Incremental
 
   - name: Start previously stopped triggers
