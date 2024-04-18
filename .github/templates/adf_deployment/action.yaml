@@ -110,6 +110,7 @@ runs:
           az datafactory trigger start --resource-group ${{ inputs.resource_group }} --factory-name ${{ inputs.adf_name }} --name $trigger
           Write-Output "Started $trigger"
         }
+      }
       else {
         Write-Output "No triggers were previously started."
       }
