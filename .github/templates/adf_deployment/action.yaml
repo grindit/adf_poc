@@ -67,16 +67,50 @@ runs:
   #       ./${{ inputs.artifact_name }}/PrePostDeploymentScript.ps1 -ArmTemplate "${{ inputs.arm_template_path }}" -ArmTemplateParameters "${{ inputs.arm_parameters_path }}" -ResourceGroupName "${{ inputs.resource_group }}" -DataFactoryName "${{ inputs.adf_name }}" -predeployment $true -deleteDeployment $false
   #     azPSVersion: 'latest'
   
-  - name: Compare ARM parameters files between DEV and Target environment
-    shell: bash
-    run: python ${{ github.workspace }}/scripts/compare-script.py -source ${{ inputs.arm_source_parameters_path }} -target ${{ inputs.arm_parameters_path }}
+  #Default approach. This action already runs pre and post deployment scripts.
+  # - name: Compare ARM parameters files between DEV and Target environment
+  #   shell: bash
+  #   run: python ${{ github.workspace }}/scripts/compare-script.py -source ${{ inputs.arm_source_parameters_path }} -target ${{ inputs.arm_parameters_path }}
 
-  - name: data-factory-deploy
-    uses: Azure/data-factory-deploy-action@v1.2.0
-    with:
-      resourceGroupName: ${{ inputs.resource_group }}
-      dataFactoryName: ${{ inputs.adf_name }}
-      armTemplateFile: ${{ inputs.arm_template_path }}
-      armTemplateParametersFile: ${{ inputs.arm_parameters_path }}
-      additionalParameters: '${{ inputs.adf_additional_paramaters }}' # (10) Parameters which will be replaced in the ARM template. Expected format 'key1=value key2=value keyN=value'. At the minimum here you should provide the target ADF name parameter. Check the ARMTemplateParametersForFactory.json file for all the parameters that are expected in your scenario  
-      
+  # - name: data-factory-deploy
+  #   uses: Azure/data-factory-deploy-action@v1.2.0
+  #   with:
+  #     resourceGroupName: ${{ inputs.resource_group }}
+  #     dataFactoryName: ${{ inputs.adf_name }}
+  #     armTemplateFile: ${{ inputs.arm_template_path }}
+  #     armTemplateParametersFile: ${{ inputs.arm_parameters_path }}
+  #     additionalParameters: '${{ inputs.adf_additional_paramaters }}' # (10) Parameters which will be replaced in the ARM template. Expected format 'key1=value key2=value keyN=value'. At the minimum here you should provide the target ADF name parameter. Check the ARMTemplateParametersForFactory.json file for all the parameters that are expected in your scenario  
+
+  - name: Stop started triggers
+      id: stop_triggers
+      shell: pwsh
+      run: |
+        Write-Output "Stopping started triggers..."
+        $triggers = az datafactory trigger list --resource-group ${{ inputs.resource_group }} --factory-name ${{ inputs.adf_name }} --query "[?properties.runtimeState=='Started'].name" -o tsv
+        Write-Output "Started triggers: $triggers"
+        echo "TRIGGERS=$triggers" | Out-File -FilePath $Env:GITHUB_ENV -Append
+        foreach ($trigger in $triggers -split ' ') {
+          az datafactory trigger stop --resource-group ${{ inputs.resource_group }} --factory-name ${{ inputs.adf_name }} --name $trigger
+          Write-Output "Stopped $trigger"
+        }
+
+    - name: Deploy ADF using ARM Template
+      shell: pwsh
+      run: |
+        az deployment group create --resource-group ${{ inputs.resource_group }} \
+          --template-file ${{ inputs.arm_template_path }} \
+          --parameters ${{ inputs.arm_parameters_path }} \
+          --mode Incremental
+
+    - name: Start previously stopped triggers
+      shell: pwsh
+      run: |
+        $triggers = Get-Content $Env:GITHUB_ENV | Select-String -Pattern "TRIGGERS=" | ForEach-Object { $_.ToString().Split('=')[1] }
+        if (-not [String]::IsNullOrWhiteSpace($triggers)) {
+          foreach ($trigger in $triggers -split ' ') {
+            az datafactory trigger start --resource-group ${{ inputs.resource_group }} --factory-name ${{ inputs.adf_name }} --name $trigger
+            Write-Output "Started $trigger"
+          }
+        else {
+          Write-Output "No triggers were previously started."
+        }
