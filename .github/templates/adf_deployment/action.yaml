@@ -88,7 +88,7 @@ runs:
         Write-Output "Stopping started triggers..."
         $triggers = az datafactory trigger list --resource-group ${{ inputs.resource_group }} --factory-name ${{ inputs.adf_name }} --query "[?properties.runtimeState=='Started'].name" -o tsv
         Write-Output "Started triggers: $triggers"
-        echo "TRIGGERS=$triggers" | Out-File -FilePath $Env:GITHUB_ENV -Append
+        echo "TRIGGERS=$triggers" >> $Env:GITHUB_ENV
         foreach ($trigger in $triggers -split ' ') {
           az datafactory trigger stop --resource-group ${{ inputs.resource_group }} --factory-name ${{ inputs.adf_name }} --name $trigger
           Write-Output "Stopped $trigger"
