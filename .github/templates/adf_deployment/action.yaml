@@ -93,13 +93,13 @@ runs:
         Write-Output "Stopped $trigger"
       }
 
-  # - name: Deploy ADF using ARM Template
-  #   shell: pwsh
-  #   run: |
-  #     az deployment group create --resource-group ${{ inputs.resource_group }} `
-  #       --template-file ${{ inputs.arm_template_path }} `
-  #       --parameters ${{ inputs.arm_parameters_path }} `
-  #       --mode Incremental
+  - name: Deploy ADF using ARM Template
+    shell: pwsh
+    run: |
+      az deployment group create --resource-group ${{ inputs.resource_group }} `
+        --template-file ${{ inputs.arm_template_path }} `
+        --parameters ${{ inputs.arm_parameters_path }} `
+        --mode Incremental
 
   - name: Show value of environmentla variable TRIGGERS
     shell: pwsh
