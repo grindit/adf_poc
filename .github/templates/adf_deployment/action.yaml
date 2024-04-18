@@ -109,13 +109,13 @@ runs:
   - name: Start previously stopped triggers
     shell: pwsh
     run: |
-      $triggers = Get-Content $Env:GITHUB_ENV | Select-String -Pattern "TRIGGERS=" | ForEach-Object { $_.ToString().Split('=')[1] }
-      if (-not [String]::IsNullOrWhiteSpace($triggers)) {
-        foreach ($trigger in $triggers -split ' ') {
+      $triggers = $Env:TRIGGERS -split ' '
+      if ($triggers -and $triggers.Length -gt 0) {
+        foreach ($trigger in $triggers) {
+          # Use Azure CLI to start each trigger
           az datafactory trigger start --resource-group ${{ inputs.resource_group }} --factory-name ${{ inputs.adf_name }} --name $trigger
-          Write-Output "Started $trigger"
+          Write-Output "Started trigger: $trigger"
         }
-      }
-      else {
-        Write-Output "No triggers were previously started."
+      } else {
+        Write-Output "No triggers found to start."
       }
