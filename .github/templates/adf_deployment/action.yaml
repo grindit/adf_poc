@@ -82,16 +82,16 @@ runs:
   #     additionalParameters: '${{ inputs.adf_additional_paramaters }}' # (10) Parameters which will be replaced in the ARM template. Expected format 'key1=value key2=value keyN=value'. At the minimum here you should provide the target ADF name parameter. Check the ARMTemplateParametersForFactory.json file for all the parameters that are expected in your scenario  
 
   - name: Stop started triggers
-      shell: pwsh
-      run: |
-        Write-Output "Stopping started triggers..."
-        $triggers = az datafactory trigger list --resource-group ${{ inputs.resource_group }} --factory-name ${{ inputs.adf_name }} --query "[?properties.runtimeState=='Started'].name" -o tsv
-        Write-Output "Started triggers: $triggers"
-        echo "TRIGGERS=$triggers" >> $Env:GITHUB_ENV
-        foreach ($trigger in $triggers -split ' ') {
-          az datafactory trigger stop --resource-group ${{ inputs.resource_group }} --factory-name ${{ inputs.adf_name }} --name $trigger
-          Write-Output "Stopped $trigger"
-        }
+    shell: pwsh
+    run: |
+      Write-Output "Stopping started triggers..."
+      $triggers = az datafactory trigger list --resource-group ${{ inputs.resource_group }} --factory-name ${{ inputs.adf_name }} --query "[?properties.runtimeState=='Started'].name" -o tsv
+      Write-Output "Started triggers: $triggers"
+      echo "TRIGGERS=$triggers" >> $Env:GITHUB_ENV
+      foreach ($trigger in $triggers -split ' ') {
+        az datafactory trigger stop --resource-group ${{ inputs.resource_group }} --factory-name ${{ inputs.adf_name }} --name $trigger
+        Write-Output "Stopped $trigger"
+      }
 
   - name: Deploy ADF using ARM Template
     shell: pwsh
